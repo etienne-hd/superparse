@@ -1,18 +1,23 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -I include
 NAME = superparse.a
-HEADER = superparse.h
 
-SRCS = 
+OBJ_DIR = .build/
+SRC_DIR = source/
+INC_DIR = include/
 
-OBJS = $(SRCS:.c=.o)
+INCLUDE = $(INC_DIR)superparse.h
+SOURCE = $(SRC_DIR)init.c
+
+OBJS = $(SOURCE:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
 
-%.o: %.c $(HEADER)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INCLUDE)
+	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
