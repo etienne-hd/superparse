@@ -7,7 +7,9 @@ SRC_DIR = source/
 INC_DIR = include/
 
 INCLUDE = $(INC_DIR)superparse.h
-SOURCE = $(SRC_DIR)init.c
+SOURCE = $(SRC_DIR)init.c \
+	$(SRC_DIR)arg.c \
+	$(SRC_DIR)list.c
 
 OBJS = $(SOURCE:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 
