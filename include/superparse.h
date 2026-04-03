@@ -11,7 +11,6 @@ typedef enum e_supertype
 {
 	NONE,
 	STRING,
-	DOUBLE,
 	INT,
 	INT64,
 	CALLBACK,

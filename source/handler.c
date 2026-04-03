@@ -16,14 +16,6 @@ handle_string(t_superoption option)
 }
 
 int
-handle_double(t_superoption option)
-{
-	(void)option;
-	// TODO
-	return (0);
-}
-
-int
 handle_int(t_superoption option)
 {
 	char *s = option.raw;

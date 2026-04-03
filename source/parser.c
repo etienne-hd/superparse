@@ -11,7 +11,6 @@ parse_option_type(t_superoption *options)
 	int (*handlers[])(t_superoption) = {
 		[NONE] = handle_none,
 		[STRING] = handle_string,
-		[DOUBLE] = handle_double,
 		[INT] = handle_int,
 		[INT64] = handle_int64,
 	};
