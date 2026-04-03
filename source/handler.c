@@ -58,7 +58,31 @@ handle_int(t_superoption option)
 int
 handle_int64(t_superoption option)
 {
-	(void)option;
-	// TODO
+	char *s = option.raw;
+	long long number = 0;
+
+	while ((*s >= '0' && *s <= '9') || ((*s == '-' || *s == '+') && s == option.raw))
+		s++;
+	if (*s != 0)
+	{
+		printf("[SuperParse]: Cannot parse 64 bits integer value \"%s\" for TODO\n", option.raw);
+		return (-1);
+	}
+	s = option.raw;
+	if (*s == '-' || *s == '+')
+		s++;
+	while (*s)
+	{
+		if ((option.raw[0] != '-' && number > number * 10 + *s - '0') || (option.raw[0] == '-' && -number < -(number * 10 + *s - '0')))
+		{
+			printf("[SuperParse]: 64 bits integer value \"%s\" for TODO out of range\n", option.raw);
+			return (-1);
+		}
+		number = number * 10 + *s - '0';
+		s++;
+	}
+	if (option.raw[0] == '-')
+		number = -number;
+	*(long long *)option.ref = number;
 	return (0);
 }
