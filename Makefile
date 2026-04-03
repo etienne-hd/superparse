@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I include
+CFLAGS = -Wall -Wextra -Werror -I include -g
 NAME = superparse.a
 
 OBJ_DIR = .build/
@@ -7,9 +7,8 @@ SRC_DIR = source/
 INC_DIR = include/
 
 INCLUDE = $(INC_DIR)superparse.h
-SOURCE = $(SRC_DIR)init.c \
-	$(SRC_DIR)arg.c \
-	$(SRC_DIR)list.c
+SOURCE = $(SRC_DIR)parser.c \
+	$(SRC_DIR)utils.c
 
 OBJS = $(SOURCE:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 

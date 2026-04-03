@@ -1,34 +1,28 @@
 #ifndef SUPERPARSE_H
 # define SUPERPARSE_H
 
-# include "list.h"
-
 typedef struct s_superparse
 {
 	const char *name;
 	const char *description;
-	t_list *args;
-	int argc;
-	char **argv;
 } t_superparse;
 
 typedef enum e_superargtype
 {
-	CHAR = '0',
+	NONE = '0',
 	STRING = '1',
-	INTEGER = '2',
-	BOOLEAN = '3'	
 } t_superargtype;
 
-typedef struct s_superarg
+typedef struct s_superoption
 {
-	const char **identifier;
+	const char *long_name; // --value
+	const char short_name; // -value
 	const t_superargtype type;
 	const char *describe;
-	const int required;
-} t_superarg;
+	void *ref;
+	char *raw;
+} t_superoption;
 
-t_superparse superparse_init(const char *name, const char *description);
-int superparse_add_arg(t_superparse *superparse, const t_superarg arg);
+int	superparse_parse(const t_superparse superparse, t_superoption *options, int argc, char **argv);
 
 #endif
