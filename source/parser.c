@@ -72,14 +72,18 @@ superparse_parse(const t_superparse superparse, t_superoption *options, int argc
 	(void)superparse;
 	int index;
 	int positional_index;
+	int	lock_positional;
 
 	index = 1;
 	positional_index = 1;
+	lock_positional = 0;
 	while (index < argc)
 	{
-		if (argv[index][0] == '-')
+		if (!lock_positional && argv[index][0] == '-')
 		{
-			if (parse_name_arg(options, argc, argv, &index) != 0)
+			if (ft_strcmp(argv[index], "--") == 0)
+				lock_positional = 1;
+			else if (parse_name_arg(options, argc, argv, &index) != 0)
 				return (-1);
 		}
 		else
