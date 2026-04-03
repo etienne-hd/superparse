@@ -7,18 +7,23 @@ typedef struct s_superparse
 	const char *description;
 } t_superparse;
 
-typedef enum e_superargtype
+typedef enum e_supertype
 {
-	NONE = '0',
-	STRING = '1',
-} t_superargtype;
+	NONE,
+	STRING,
+	DOUBLE,
+	INT,
+	INT64,
+	CALLBACK,
+} t_supertype;
 
 typedef struct s_superoption
 {
 	const char *long_name; // --value
 	const char short_name; // -value
-	const t_superargtype type;
+	const t_supertype type;
 	const char *describe;
+	int (*callback)(struct s_superoption option);
 	void *ref;
 	char *raw;
 } t_superoption;

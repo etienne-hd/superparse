@@ -8,7 +8,8 @@ INC_DIR = include/
 
 INCLUDE = $(INC_DIR)superparse.h
 SOURCE = $(SRC_DIR)parser.c \
-	$(SRC_DIR)utils.c
+	$(SRC_DIR)utils.c \
+	$(SRC_DIR)handler.c
 
 OBJS = $(SOURCE:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 

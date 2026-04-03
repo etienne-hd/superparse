@@ -1,25 +1,34 @@
 #include "superparse.h"
 #include "utils.h"
+#include "handler.h"
 #include <stdio.h>
 #include <unistd.h>
 
 static int
-parse_arg_type(t_superoption *options)
+parse_option_type(t_superoption *options)
 {
 	size_t i;
+	int (*handlers[])(t_superoption) = {
+		[NONE] = handle_none,
+		[STRING] = handle_string,
+		[DOUBLE] = handle_double,
+		[INT] = handle_int,
+		[INT64] = handle_int64,
+	};
 
 	i = 0;
 	while (options[i].short_name || options[i].long_name)
 	{
-		t_superoption option = options[i];
-		if (option.raw != NULL)
-		{
-			if (option.type == NONE)
-				*(char *)option.ref = 1;
-			else if (option.type == STRING)
-				*(char **)option.ref = option.raw;
-		}
-		i++;
+		t_superoption option = options[i++];
+		if (option.raw == NULL)
+			continue ;
+		int (*handler)(t_superoption);
+		if (option.type == CALLBACK)
+			handler = option.callback;
+		else
+			handler = handlers[option.type];
+		if (handler(option) == -1)
+			return (-1);
 	}
 	return (0);
 }
@@ -92,7 +101,7 @@ superparse_parse(const t_superparse superparse, t_superoption *options, int argc
 	}
 	while (positional_index < argc)
 		argv[positional_index++] = NULL;
-	if (parse_arg_type(options) == -1)
+	if (parse_option_type(options) == -1)
 		return (-1);
 	return (0);
 }
