@@ -4,7 +4,6 @@
 
 int handle_none(t_superoption *option);
 int handle_string(t_superoption *option);
-int handle_double(t_superoption *option);
 int handle_int(t_superoption *option);
 int handle_int64(t_superoption *option);
 
