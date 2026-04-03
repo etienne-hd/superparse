@@ -29,7 +29,7 @@ handle_int(t_superoption option)
 	char *s = option.raw;
 	int number = 0;
 
-	while ((*s >= '0' && *s <= '9') || (*s == '-' && s == option.raw))
+	while ((*s >= '0' && *s <= '9') || ((*s == '-' || *s == '+') && s == option.raw))
 		s++;
 	if (*s != 0)
 	{
@@ -37,7 +37,7 @@ handle_int(t_superoption option)
 		return (-1);
 	}
 	s = option.raw;
-	if (*s == '-')
+	if (*s == '-' || *s == '+')
 		s++;
 	while (*s)
 	{
