@@ -22,9 +22,10 @@ typedef struct s_superoption
 	const char short_name; // -value
 	const t_supertype type;
 	const char *describe;
-	int (*callback)(struct s_superoption option);
+	int (*callback)(struct s_superoption *);
+	char *invoked;
 	void *ref;
-	char *raw;
+	char *value;
 } t_superoption;
 
 int	superparse_parse(const t_superparse superparse, t_superoption *options, int argc, char **argv);
