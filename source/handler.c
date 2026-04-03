@@ -27,7 +27,7 @@ int
 handle_int(t_superoption option)
 {
 	char *s = option.raw;
-	long number = 0;
+	int number = 0;
 
 	while ((*s >= '0' && *s <= '9') || (*s == '-' && s == option.raw))
 		s++;
@@ -41,12 +41,12 @@ handle_int(t_superoption option)
 		s++;
 	while (*s)
 	{
-		number = number * 10 + *s - '0';
-		if ((option.raw[0] != '-' && number > 2147483647) || (option.raw[0] == '-' && -number < -2147483648))
+		if ((option.raw[0] != '-' && number > number * 10 + *s - '0') || (option.raw[0] == '-' && -number < -(number * 10 + *s - '0')))
 		{
 			printf("[SuperParse]: Integer value \"%s\" for TODO out of range\n", option.raw);
 			return (-1);
 		}
+		number = number * 10 + *s - '0';
 		s++;
 	}
 	if (option.raw[0] == '-')
