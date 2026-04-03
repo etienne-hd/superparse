@@ -1,4 +1,5 @@
 #include "superparse.h"
+#include <stdio.h>
 
 int
 handle_none(t_superoption option)
@@ -25,8 +26,32 @@ handle_double(t_superoption option)
 int
 handle_int(t_superoption option)
 {
-	(void)option;
-	// TODO
+	char *s = option.raw;
+	long number = 0;
+
+	while ((*s >= '0' && *s <= '9') || (*s == '-' && s == option.raw))
+		s++;
+	if (*s != 0)
+	{
+		printf("[SuperParse]: Cannot parse integer value \"%s\" for TODO\n", option.raw);
+		return (-1);
+	}
+	s = option.raw;
+	if (*s == '-')
+		s++;
+	while (*s)
+	{
+		number = number * 10 + *s - '0';
+		if ((option.raw[0] != '-' && number > 2147483647) || (option.raw[0] == '-' && -number < -2147483648))
+		{
+			printf("[SuperParse]: Integer value \"%s\" for TODO out of range\n", option.raw);
+			return (-1);
+		}
+		s++;
+	}
+	if (option.raw[0] == '-')
+		number = -number;
+	*(int *)option.ref = number;
 	return (0);
 }
 
