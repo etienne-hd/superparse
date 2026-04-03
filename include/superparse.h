@@ -4,7 +4,8 @@
 typedef struct s_superparse
 {
 	const char *name;
-	const char *description;
+	const char *usage;
+	const char *summary;
 } t_superparse;
 
 typedef enum e_supertype
@@ -21,6 +22,7 @@ typedef struct s_superoption
 	const char *long_name; // --value
 	const char short_name; // -value
 	const t_supertype type;
+	const char *value_name;
 	const char *describe;
 	int (*callback)(struct s_superoption *);
 	char *invoked;
@@ -29,5 +31,6 @@ typedef struct s_superoption
 } t_superoption;
 
 int	superparse_parse(const t_superparse superparse, t_superoption *options, int argc, char **argv);
+void show_help(t_superparse superparse, t_superoption *options);
 
 #endif
