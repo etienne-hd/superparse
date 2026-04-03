@@ -1,5 +1,6 @@
 #include "superparse.h"
 #include "utils.h"
+#include <stdio.h>
 #include <unistd.h>
 
 static int
@@ -13,14 +14,17 @@ get_padding(t_superoption *options)
 	option = options;
 	while (option->short_name || option->long_name)
 	{
-		current_padding = 6;
+		current_padding = 6; // __-x__
+		if (option->long_name)
+			current_padding += 2 + ft_strlen(option->long_name); // --<'long_name length'>
 		if (option->type != NONE && option->value_name)
-			current_padding += 3 + ft_strlen(option->value_name);
+			current_padding += 3 + ft_strlen(option->value_name); // _<'value length'>
+		current_padding += 2; 
 		if (current_padding > padding)
 			padding = current_padding;
 		option++;
 	}
-	if (current_padding > 32)
+	if (padding > 32)
 		return (32);
 	return (padding);
 }
@@ -42,7 +46,7 @@ write_buf(const char *msg, unsigned int n)
 		}
 		return (i);
 	}
-	while (i < n)
+	while (i < n && msg[i])
 	{
 		if (buffer_cursor >= sizeof(buffer))
 			write_buf(NULL, 0);
@@ -52,7 +56,8 @@ write_buf(const char *msg, unsigned int n)
 	return (i);
 }
 
-void show_help(t_superparse superparse, t_superoption *options)
+void
+show_help(t_superparse superparse, t_superoption *options)
 {
 	int padding;
 	int current_padding;
@@ -66,12 +71,19 @@ void show_help(t_superparse superparse, t_superoption *options)
 	}
 
 	padding = get_padding(options);
+	printf("padding: %d\n", padding);
 	option = options;
 	while (option->short_name || option->long_name)
 	{
 		current_padding = 0;
-		current_padding += write_buf("  -", 3);
-		current_padding += write_buf(&option->short_name, 1);
+		if (option->short_name)
+			current_padding += write_buf("  -", 3) + write_buf(&option->short_name, 1);
+		else
+			current_padding += write_buf("      ", 6);
+		if (option->short_name && option->long_name)
+			current_padding += write_buf(", ", 2);
+		if (option->long_name)
+			current_padding += write_buf("--", 2) + write_buf(option->long_name, ft_strlen(option->long_name));
 		if (option->type != NONE && option->value_name)
 		{
 			current_padding += write_buf(" <", 2);
@@ -79,7 +91,7 @@ void show_help(t_superparse superparse, t_superoption *options)
 			current_padding += write_buf(">", 1);
 		}
 		current_padding += write_buf("  ", 2);
-		if (padding - current_padding > 0)
+		if (current_padding < padding)
 			write_buf("                          ", padding - current_padding);
 		if (option->describe)
 			write_buf(option->describe, ft_strlen(option->describe));
