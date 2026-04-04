@@ -28,33 +28,6 @@ get_padding(t_superoption *options)
 	return (padding);
 }
 
-static int
-write_buf(const char *msg, unsigned int n)
-{
-	static char buffer[1024];
-	static unsigned long buffer_cursor;
-	unsigned int i;
-
-	i = 0;
-	if (msg == NULL)
-	{
-		if (buffer_cursor)
-		{
-			i = write(1, buffer, buffer_cursor);
-			buffer_cursor = 0;
-		}
-		return (i);
-	}
-	while (i < n && msg[i])
-	{
-		if (buffer_cursor >= sizeof(buffer))
-			write_buf(NULL, 0);
-		buffer[buffer_cursor++] = msg[i];
-		i++;
-	}
-	return (i);
-}
-
 static void
 print_describe(const char *message, int current_padding, int default_padding)
 {
@@ -71,13 +44,13 @@ print_describe(const char *message, int current_padding, int default_padding)
 			// print value
 			if (current_padding + end - begin >= 80)
 			{
-				write_buf("\n", 1);
+				write_buf(1, "\n", -1);
 				current_padding = 0;
-				current_padding += write_buf("                                                ", default_padding);
+				current_padding += write_buf(1, "                                                ", default_padding);
 			}
 			else if (begin != 0)
-				current_padding += write_buf(" ", 1);
-			current_padding += write_buf(&message[begin], end - begin);
+				current_padding += write_buf(1, " ", -1);
+			current_padding += write_buf(1, &message[begin], end - begin);
 			while (ft_isspace(message[end]))
 				end++;
 			begin = end;
@@ -94,9 +67,9 @@ show_help(t_superparse superparse, t_superoption *options)
 
 	if (superparse.usage)
 	{
-		write_buf("Usage: ", 7);
-		write_buf(superparse.usage, ft_strlen(superparse.usage));
-		write_buf("\n", 1);
+		write_buf(1, "Usage: ", -1);
+		write_buf(1, superparse.usage, -1);
+		write_buf(1, "\n", -1);
 	}
 
 	padding = get_padding(options);
@@ -105,32 +78,32 @@ show_help(t_superparse superparse, t_superoption *options)
 	{
 		current_padding = 0;
 		if (option->short_name)
-			current_padding += write_buf("  -", 3) + write_buf(&option->short_name, 1);
+			current_padding += write_buf(1, "  -", -1) + write_buf(1, &option->short_name, 1);
 		else
-			current_padding += write_buf("      ", 6);
+			current_padding += write_buf(1, "      ", -1);
 		if (option->short_name && option->long_name)
-			current_padding += write_buf(", ", 2);
+			current_padding += write_buf(1, ", ", -1);
 		if (option->long_name)
-			current_padding += write_buf("--", 2) + write_buf(option->long_name, ft_strlen(option->long_name));
+			current_padding += write_buf(1, "--", -1) + write_buf(1, option->long_name, -1);
 		if (option->type != NONE && option->value_name)
 		{
-			current_padding += write_buf(" <", 2);
-			current_padding += write_buf(option->value_name, ft_strlen(option->value_name));
-			current_padding += write_buf(">", 1);
+			current_padding += write_buf(1, " <", -1);
+			current_padding += write_buf(1, option->value_name, -1);
+			current_padding += write_buf(1, ">", -1);
 		}
-		current_padding += write_buf("  ", 2);
+		current_padding += write_buf(1, "  ", -1);
 		if (current_padding < padding)
-			current_padding += write_buf("                          ", padding - current_padding);
+			current_padding += write_buf(1, "                          ", padding - current_padding);
 		if (option->describe)
 			print_describe(option->describe, current_padding, padding + 2);
-		write_buf("\n", 1);
+		write_buf(1, "\n", -1);
 		option++;
 	}
 	if (superparse.summary)
 	{
-		write_buf("\n", 1);
-		write_buf(superparse.summary, ft_strlen(superparse.summary));
-		write_buf("\n", 1);
+		write_buf(1, "\n", -1);
+		write_buf(1, superparse.summary, -1);
+		write_buf(1, "\n", -1);
 	}
-	write_buf(NULL, 0);
+	write_buf(1, NULL, 0);
 }

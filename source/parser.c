@@ -1,7 +1,6 @@
 #include "superparse.h"
 #include "utils.h"
 #include "handler.h"
-#include <stdio.h>
 #include <unistd.h>
 
 static int
@@ -42,12 +41,23 @@ parse_name_arg(t_superoption *options, int argc, char **argv, int *i)
 			option->invoked = processing_arg;
 			if (!is_long_name && option->type != NONE && ft_strlen(argv[*i]) > ft_count_char(&argv[*i][1], option->short_name) + 1)
 			{
-				printf("[SuperParse]: %s can't collapse non NONE argument!\n", processing_arg);
+				write_buf(2, "superparse: \"", -1);
+				write_buf(2, option->invoked, -1);
+				write_buf(2, "\" cannot be used in a grouped option.\n", -1);
+				write_buf(2, 0, 0);
 				return (-1);
 			}
 			else if (option->type != NONE)
 			{
 				option->value = argv[*i + 1];
+				if (!option->value)
+				{
+					write_buf(2, "superparse: \"", -1);
+					write_buf(2, option->invoked, -1);
+					write_buf(2, "\" option requires an argument.\n", -1);
+					write_buf(2, 0, 0);
+					return (-1);
+				}
 				(*i)++;
 			}
 			else
@@ -62,7 +72,10 @@ parse_name_arg(t_superoption *options, int argc, char **argv, int *i)
 	}
 	if (!option_checker && !(!is_long_name && ft_strlen(processing_arg) == option_checker + 1))
 	{
-		printf("[SuperParse]: Unknown option %s\n", processing_arg);
+		write_buf(2, "superparse: Unknown option \"", -1);
+		write_buf(2, processing_arg, -1);
+		write_buf(2, "\"\n", -1);
+		write_buf(2, 0, 0);
 		return (-1);
 	}
 	return (0);

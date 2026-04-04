@@ -1,5 +1,5 @@
 #include "superparse.h"
-#include <stdio.h>
+#include "utils.h"
 
 int
 handle_none(t_superoption *option)
@@ -25,7 +25,12 @@ handle_int(t_superoption *option)
 		s++;
 	if (*s != 0)
 	{
-		printf("[SuperParse]: Cannot parse integer value \"%s\" for %s\n", option->value, option->invoked);
+		write_buf(2, "superparse: Cannot parse integer value \"", -1);
+		write_buf(2, option->value, -1);
+		write_buf(2, "\" for ", -1);
+		write_buf(2, option->invoked, -1);
+		write_buf(2, "\n", -1);
+		write_buf(2, 0, 0);
 		return (-1);
 	}
 	s = option->value;
@@ -35,7 +40,12 @@ handle_int(t_superoption *option)
 	{
 		if ((option->value[0] != '-' && number > number * 10 + *s - '0') || (option->value[0] == '-' && -number < -(number * 10 + *s - '0')))
 		{
-			printf("[SuperParse]: Integer value \"%s\" for %s out of range\n", option->value, option->invoked);
+			write_buf(2, "superparse: Integer value \"", -1);
+			write_buf(2, option->value, -1);
+			write_buf(2, "\" for ", -1);
+			write_buf(2, option->invoked, -1);
+			write_buf(2, " out of range\n", -1);
+			write_buf(2, 0, 0);
 			return (-1);
 		}
 		number = number * 10 + *s - '0';
@@ -57,7 +67,12 @@ handle_int64(t_superoption *option)
 		s++;
 	if (*s != 0)
 	{
-		printf("[SuperParse]: Cannot parse 64 bits integer value \"%s\" for %s\n", option->value, option->invoked);
+		write_buf(2, "superparse: Cannot parse integer 64 value \"", -1);
+		write_buf(2, option->value, -1);
+		write_buf(2, "\" for ", -1);
+		write_buf(2, option->invoked, -1);
+		write_buf(2, "\n", -1);
+		write_buf(2, 0, 0);
 		return (-1);
 	}
 	s = option->value;
@@ -67,7 +82,12 @@ handle_int64(t_superoption *option)
 	{
 		if ((option->value[0] != '-' && number > number * 10 + *s - '0') || (option->value[0] == '-' && -number < -(number * 10 + *s - '0')))
 		{
-			printf("[SuperParse]: 64 bits integer value \"%s\" for %s out of range\n", option->value, option->invoked);
+			write_buf(2, "superparse: Integer 64 value \"", -1);
+			write_buf(2, option->value, -1);
+			write_buf(2, "\" for ", -1);
+			write_buf(2, option->invoked, -1);
+			write_buf(2, " out of range\n", -1);
+			write_buf(2, 0, 0);
 			return (-1);
 		}
 		number = number * 10 + *s - '0';

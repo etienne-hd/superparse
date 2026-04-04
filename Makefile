@@ -10,7 +10,8 @@ INCLUDE = $(INC_DIR)superparse.h
 SOURCE = $(SRC_DIR)parser.c \
 	$(SRC_DIR)utils.c \
 	$(SRC_DIR)handler.c \
-	$(SRC_DIR)help.c
+	$(SRC_DIR)help.c \
+	$(SRC_DIR)printer.c
 
 OBJS = $(SOURCE:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 

@@ -9,5 +9,6 @@ int ft_strcmp(const char *s1, const char *s2);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
 void *ft_memcpy(void *dest, const void *src, size_t n);
 int ft_isspace(char c);
+int write_buf(int fd, const char *msg, unsigned int n);
 
 #endif
