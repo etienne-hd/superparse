@@ -1,6 +1,5 @@
 #include "superparse.h"
 #include "utils.h"
-#include <stdio.h>
 #include <unistd.h>
 
 static int
@@ -56,6 +55,36 @@ write_buf(const char *msg, unsigned int n)
 	return (i);
 }
 
+static void
+print_describe(const char *message, int current_padding, int default_padding)
+{
+	int begin;
+	int end;
+
+	end = 0;
+	begin = 0;
+	while (message[end])
+	{
+		end++;
+		if ((message[end] == 0 || ft_isspace(message[end])) && end - begin > 0)
+		{
+			// print value
+			if (current_padding + end - begin >= 80)
+			{
+				write_buf("\n", 1);
+				current_padding = 0;
+				current_padding += write_buf("                                                ", default_padding);
+			}
+			else if (begin != 0)
+				current_padding += write_buf(" ", 1);
+			current_padding += write_buf(&message[begin], end - begin);
+			while (ft_isspace(message[end]))
+				end++;
+			begin = end;
+		}
+	}
+}
+
 void
 show_help(t_superparse superparse, t_superoption *options)
 {
@@ -71,7 +100,6 @@ show_help(t_superparse superparse, t_superoption *options)
 	}
 
 	padding = get_padding(options);
-	printf("padding: %d\n", padding);
 	option = options;
 	while (option->short_name || option->long_name)
 	{
@@ -92,9 +120,9 @@ show_help(t_superparse superparse, t_superoption *options)
 		}
 		current_padding += write_buf("  ", 2);
 		if (current_padding < padding)
-			write_buf("                          ", padding - current_padding);
+			current_padding += write_buf("                          ", padding - current_padding);
 		if (option->describe)
-			write_buf(option->describe, ft_strlen(option->describe));
+			print_describe(option->describe, current_padding, padding + 2);
 		write_buf("\n", 1);
 		option++;
 	}

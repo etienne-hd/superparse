@@ -62,3 +62,8 @@ void *ft_memcpy(void *dest, const void *src, size_t n)
 	}
 	return (dest);
 }
+
+int ft_isspace(char c)
+{
+	return ((c >= 8 && c <= 13) || c == ' ');
+}
