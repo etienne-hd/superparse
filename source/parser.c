@@ -43,7 +43,7 @@ parse_name_arg(t_superoption *options, int argc, char **argv, int *i)
 			{
 				write_buf(2, "superparse: \"", -1);
 				write_buf(2, option->invoked, -1);
-				write_buf(2, "\" cannot be used in a grouped option.\n", -1);
+				write_buf(2, "\" option requiring a value cannot be grouped.\n", -1);
 				write_buf(2, 0, 0);
 				return (-1);
 			}
@@ -84,7 +84,6 @@ parse_name_arg(t_superoption *options, int argc, char **argv, int *i)
 int
 superparse_parse(const t_superparse superparse, t_superoption *options, int argc, char **argv)
 {
-	(void)superparse;
 	int index;
 	int positional_index;
 	int	lock_positional;
@@ -98,6 +97,11 @@ superparse_parse(const t_superparse superparse, t_superoption *options, int argc
 		{
 			if (ft_strcmp(argv[index], "--") == 0)
 				lock_positional = 1;
+			if (ft_strcmp(argv[index], "--help") == 0)
+			{
+				show_help(superparse, options);
+				return (-1);
+			}
 			else if (parse_name_arg(options, argc, argv, &index) != 0)
 				return (-1);
 		}
