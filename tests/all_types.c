@@ -23,7 +23,7 @@ int	main(int argc, char **argv)
 		},
 		(t_superoption){
 			.short_name='d', .long_name="ddd",
-			.type=INT, .ref=&opt_d, .value_name="int64"
+			.type=INT64, .ref=&opt_d, .value_name="int64"
 		},
 		{ 0 }
 	};
