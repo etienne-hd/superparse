@@ -1,13 +1,6 @@
 #ifndef SUPERPARSE_H
 # define SUPERPARSE_H
 
-typedef struct s_superparse
-{
-	const char *name;
-	const char *usage;
-	const char *summary;
-} t_superparse;
-
 typedef enum e_supertype
 {
 	NONE,
@@ -29,6 +22,14 @@ typedef struct s_superoption
 	void *ref;
 	char *value;
 } t_superoption;
+
+typedef struct s_superparse
+{
+	const char *name;
+	const char *usage;
+	const char *summary;
+	void (*override_help)(struct s_superparse, t_superoption *);
+} t_superparse;
 
 int	superparse_parse(const t_superparse superparse, t_superoption *options, int argc, char **argv);
 void show_help(t_superparse superparse, t_superoption *options);

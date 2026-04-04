@@ -99,7 +99,8 @@ superparse_parse(const t_superparse superparse, t_superoption *options, int argc
 				lock_positional = 1;
 			if (ft_strcmp(argv[index], "--help") == 0)
 			{
-				show_help(superparse, options);
+				void (*help_function)(t_superparse, t_superoption *) = superparse.override_help ? superparse.override_help : show_help;
+				help_function(superparse, options);
 				return (-1);
 			}
 			else if (parse_name_arg(options, argc, argv, &index) != 0)
